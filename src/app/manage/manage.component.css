@@ -1,0 +1,14 @@
+.input-full-width {
+    width: 100%;
+}
+mat-card {
+    margin-bottom: 10px;
+    margin-bottom: 10px;
+}
+.user-details {
+    background-color: #d9edf7;
+    color: #203864;
+}
+.center {
+    margin: 0 auto !important;
+}

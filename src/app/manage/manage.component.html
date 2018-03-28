@@ -1,0 +1,26 @@
+<mat-progress-bar mode="indeterminate" *ngIf="!error && loading"></mat-progress-bar>
+<mat-card>
+  <mat-card-content>
+    
+    <mat-form-field class="input-full-width">
+      <input matInput [(ngModel)]="number" (ngModelChange)="checkNumber($event)" type="number" minlength="1" maxlength="500" placeholder="Enter Number of Identifiers to generate..."/>
+    </mat-form-field>
+    <span style="color: red;" *ngIf="numberError">{{ numberError }}</span>
+    <mat-form-field class="input-full-width">
+      <input matInput [(ngModel)]="password" type="paswword"(ngModelChange)="checkPass($event)" placeholder="Enter Password for the PDF to be generate..."/>
+    </mat-form-field>
+    <span style="color: red;" *ngIf="passwordError">{{ passwordError }}</span>
+    <br><br>
+    <button class="center" color="primary" mat-raised-button (click)="generate()">Generate</button>
+    
+  </mat-card-content>
+  
+
+</mat-card>
+
+<mat-card *ngIf="error">
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+</mat-card>
+<mat-card *ngIf="success">
+  <div class="alert alert-success">{{ success }}</div>
+</mat-card>
