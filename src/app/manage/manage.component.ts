@@ -7,6 +7,7 @@ import { GenerationService } from '../services/generation.service';
 import { Constants } from '../services/constants';
 import { SessionStorageService } from '../services/session-storage.service';
 import { DialogComponent } from '../shared/dialog/dialog.component';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-manage',
@@ -23,8 +24,10 @@ export class ManageComponent implements OnInit {
   public error = false;
   public errorMessage;
   public numberError = null;
+  public numberZError = null;
   public passwordError = null;
   public success = '';
+  public zuriNumber: number;
   @ViewChild('barcode') public barcode: ElementRef;
 
   constructor(
@@ -47,6 +50,19 @@ export class ManageComponent implements OnInit {
     } else {
       this.number = number;
       this.numberError = null;
+    }
+  }
+
+  public checkZuri(number) {
+    this.success = '';
+    this.errorMessage = '';
+    if (number > 5000) {
+      this.numberZError = 'You cannot generate more than 1000 identifers at once!';
+    } else if (number < 10) {
+      this.numberZError = 'You cannot generate less than 10 identifiers!';
+    } else {
+      this.zuriNumber = number;
+      this.numberZError = null;
     }
   }
 
@@ -91,14 +107,39 @@ export class ManageComponent implements OnInit {
 
   }
 
+  public generateZuri() {
+    this.error = false;
+    this.loading = true;
+    if (!this.zuriNumber) {
+      this.loading = false;
+      this.numberZError = 'Number of identifiers to generate is required!';
+    }
+    if (!this.numberZError && this.zuriNumber && this.userId) {
+      this.openDialog();
+      this.genService.generateZuriIds(this.zuriNumber, this.userId)
+      .subscribe((data) => {
+        saveAs(data, 'data.csv');
+        this.closeDialog();
+        this.loading = false;
+        this.success = 'Identifiers successfully generated';
+      }, (err) => {
+        this.error = true;
+        this.loading = false;
+        this.closeDialog();
+        this.errorMessage = 'There was an error generating identifiers!';
+      });
+    }
+
+  }
+
   public openDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    this.dialog.open(DialogComponent, {
       panelClass: 'transparent',
       disableClose: true
     });
   }
   public closeDialog(): void {
-    const dialogRef = this.dialog.closeAll();
+    this.dialog.closeAll();
     this.password = '';
     this.number = null;
   }

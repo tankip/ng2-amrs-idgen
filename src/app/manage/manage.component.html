@@ -1,5 +1,8 @@
 <mat-progress-bar mode="indeterminate" *ngIf="!error && loading"></mat-progress-bar>
 <mat-card>
+  <mat-card-title>
+    AMRS Universal IDs
+  </mat-card-title>
   <mat-card-content>
     
     <mat-form-field class="input-full-width">
@@ -11,12 +14,30 @@
     </mat-form-field>
     <span style="color: red;" *ngIf="passwordError">{{ passwordError }}</span>
     <br><br>
-    <button class="center" color="primary" mat-raised-button (click)="generate()">Generate</button>
+    <button class="center" color="primary" mat-raised-button (click)="generate()">Generate Universal ID</button>
     
   </mat-card-content>
   
 
 </mat-card>
+
+<!-- <mat-card>
+  <mat-card-title>
+    ZURI Health IDs
+  </mat-card-title>
+  <mat-card-content>
+    
+    <mat-form-field class="input-full-width">
+      <input matInput [(ngModel)]="zuriNumber" (ngModelChange)="checkZuri($event)" type="number" minlength="1" maxlength="5000" placeholder="Enter Number of Identifiers to generate..."/>
+    </mat-form-field>
+    <span style="color: red;" *ngIf="numberZError">{{ numberZError }}</span>
+    <br><br>
+    <button class="center" color="primary" mat-raised-button (click)="generateZuri()">Generate ZURI ID</button>
+    
+  </mat-card-content>
+  
+
+</mat-card> -->
 
 <mat-card *ngIf="error">
   <div class="alert alert-danger">{{ errorMessage }}</div>
